@@ -38,6 +38,7 @@ RUN composer install --no-dev --optimize-autoloader
 # Dar permisos a las carpetas de Laravel
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
+COPY default.conf /etc/nginx/sites-available/default
 # Copiar un archivo de configuración de Nginx (opcional, pero Railway lo agradecerá)
 # Si no tienes uno, Railway intentará usar el puerto 80 por defecto.
 EXPOSE 80
