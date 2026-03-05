@@ -42,6 +42,7 @@ COPY default.conf /etc/nginx/sites-available/default
 # Copiar un archivo de configuración de Nginx (opcional, pero Railway lo agradecerá)
 # Si no tienes uno, Railway intentará usar el puerto 80 por defecto.
 EXPOSE 80
-
+RUN sed -i 's/listen = \/run\/php\/php8.3-fpm.sock/listen = 9000/' /usr/local/etc/php-fpm.d/www.conf || \
+    sed -i 's/listen = 127.0.0.1:9000/listen = 9000/' /usr/local/etc/php-fpm.d/www.conf
 # COMANDO FINAL: Ejecuta migraciones, crea el link de imágenes y arranca Nginx + PHP
 CMD sh -c "php artisan storage:link && service nginx start && php-fpm"
