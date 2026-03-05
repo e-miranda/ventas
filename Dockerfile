@@ -52,4 +52,7 @@ EXPOSE 80
 RUN sed -i 's/listen = \/run\/php\/php8.3-fpm.sock/listen = 9000/' /usr/local/etc/php-fpm.d/www.conf || \
     sed -i 's/listen = 127.0.0.1:9000/listen = 9000/' /usr/local/etc/php-fpm.d/www.conf
 # COMANDO FINAL: Ejecuta migraciones, crea el link de imágenes y arranca Nginx + PHP
+
+RUN chmod -R 775 /var/www/storage /var/www/public
+
 CMD sh -c "php artisan storage:link && service nginx start && php-fpm"
