@@ -38,6 +38,13 @@ RUN composer install --no-dev --optimize-autoloader
 # Dar permisos a las carpetas de Laravel
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
+# Instalar Node.js (necesario para Vite)
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs
+
+# Después de tu COPY . . y antes de los permisos, ejecuta:
+RUN npm install && npm run build
+
 COPY default.conf /etc/nginx/sites-available/default
 # Copiar un archivo de configuración de Nginx (opcional, pero Railway lo agradecerá)
 # Si no tienes uno, Railway intentará usar el puerto 80 por defecto.
