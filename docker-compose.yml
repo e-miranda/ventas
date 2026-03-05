@@ -1,0 +1,49 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: laravel-ventas
+    container_name: laravel-app
+    restart: unless-stopped
+    tty: true
+    working_dir: /var/www
+    volumes:
+      - .:/var/www
+    networks:
+      - laravel-net
+    command: php-fpm
+# El Servidor Web (Nginx)
+  webserver:
+    image: nginx:alpine
+    container_name: nginx-server
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - .:/var/www
+      - ./docker-config/nginx.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - laravel-net
+#motor de base de datos
+  db:
+    image: mysql
+    ports: 
+        - "3307:3306"
+    container_name: mysql-db
+    environment:
+      MYSQL_DATABASE: ventas
+      MYSQL_ROOT_PASSWORD: ventas
+      MYSQL_USER: usuario
+      MYSQL_PASSWORD: usuario
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - laravel-net
+
+networks:
+  laravel-net:
+    driver: bridge
+
+volumes:
+  dbdata:
